@@ -1,3 +1,12 @@
+"""
+EXAMPLE USAGE
+=============
+
+For example, if you want to get London's weather every 10 minutes for an hour:
+    $ python3 cldemo.py -hn <HOSTNAME> -l London -d 600 -i 60 -k <API_KEY>
+        -u <USERNAME> -p <PASSWORD> -n <DATABASENAME>
+"""
+
 import argparse
 import mysql.connector
 from fetcher import Fetcher
