@@ -28,6 +28,8 @@ parser.add_argument('-i', '--interval', type=float, default = 1,
                     help="Over how many minutes do you want to fetch?")
 parser.add_argument('-k', '--api_key', type=str,
                     help="WeatherstackAPI key goes here.")
+parser.add_argument('-t', '--table_name', type=str,
+                    help="Table name")
 
 args = parser.parse_args()
 
@@ -41,5 +43,5 @@ mydb = mysql.connector.connect(
 if args.api_key == None:
     print("Please pass in a valid API key!")
 else:
-    fetcher = Fetcher(mydb, args.api_key, args.location)
+    fetcher = Fetcher(mydb, args.api_key, args.location, args.table_name)
     fetcher.periodic_load(args.delay, args.interval)
