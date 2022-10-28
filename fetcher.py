@@ -46,6 +46,7 @@ class Fetcher:
             pressure INT, \
             wind_dir VARCHAR(3), \
             wind_degree INT, \
+            wind_speed INT, \
             weather_descriptions VARCHAR(255), \
             weather_code INT, \
             temperature INT)")
@@ -74,7 +75,8 @@ class Fetcher:
 
         argstring += str(args[-1])
 
-        return "INSERT INTO weather (local_time,timezone_id,lon,lat,region,\
+        return "INSERT INTO " + self.table_name + " (local_time,timezone_id,\
+        lon,lat,region,\
         country,name,is_day,visibility,uv_index,feelslike,cloudcover,\
         humidity,precip,pressure,wind_dir,wind_degree,wind_speed,\
         weather_descriptions,weather_code,temperature) \
@@ -82,9 +84,8 @@ class Fetcher:
 
     def single_request(self):
         """Returns a JSON of weather data at a location. See weatherstack API"""
-
-        self.r = requests.get('http://api.weatherstack.com/current?\
-        access_key='+self.api_key+'&query='+self.location).json()
+        self.r = requests.get('http://api.weatherstack.com/current?access_key='
+                              +self.api_key+'&query='+self.location).json()
 
     def load(self):
         """After fetching weather data, drop some features and combine for
@@ -117,4 +118,5 @@ class Fetcher:
             print(datetime.datetime.now())
             self.load()
             next_call = next_call + delay
-            time.sleep(next_call - time.time())
+            if i != n:
+                time.sleep(next_call - time.time())
